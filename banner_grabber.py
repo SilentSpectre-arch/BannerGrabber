@@ -4,7 +4,7 @@ import socket
 
 target=input("Enter target: ")
 
-port=input("Enter port: ")
+port=int(input("Enter port: "))
 
 sock= socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
