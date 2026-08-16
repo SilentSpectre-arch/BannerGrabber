@@ -2,32 +2,38 @@
 
 import socket
 
-target=input("Enter target: ")
+def grab_banner(target,port):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.settimeout(3)
 
-port=int(input("Enter port: "))
+    try:
+        sock.connect((target,port))
 
-sock= socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        print(f'[+] {target}:{port} open')
 
-sock.settimeout(3)
+        banner= sock.recv(1024)
 
-try:
+        if banner:
+            banner = banner.decode(errors='ignore').strip()
+            print(f"    Banner:{banner}")
+        else:
+            print("No banner received")
 
-    result=sock.connect((target,port))
+    except socket.timeout:
+        print(f'[-] TimeOut')
 
-    print(f'[+] Connected to {target}:{port}')
+    except ConnectionRefusedError:
+        print(f'[-] {target}:{port} CLOSED')
 
-    banner=sock.recv(1024)
+    except Exception as e:
+        print(f'[-] {target}:{port} ERROR: {e}')
 
-    print(f'[+] Banner: {banner.decode(errors='ignore').strip()}')
+    finally:
+        sock.close()
 
-except socket.timeout:
-    print("[-] Connection timed out")
+target = input("Enter target: ")
 
-except ConnectionRefusedError:
-    print(f"[-] Connection refused")
+ports = [21,22,23,25,53,80,110,143,443,3306,8080]
 
-except Exception as e:
-    print(f'[-] Error: {e}')
-
-finally:
-    sock.close()
+for port in ports:
+    grab_banner(target,port)
