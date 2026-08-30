@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 
 import socket
+import re
+
+# Probes table
+HTTP_PORTS={80,8000,8080}
+
+def extract_server_header(response):
+    pass
 
 def grab_banner(target,port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
