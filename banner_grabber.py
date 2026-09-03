@@ -7,7 +7,11 @@ import re
 HTTP_PORTS={80,8000,8080}
 
 def extract_server_header(response):
-    pass
+    match=re.search(r"^Server:\s*(.+)$", response,
+                    re.MULTILINE | re.IGNORECASE)
+    if match:
+        return match.group(1).strip()
+    return None
 
 def grab_banner(target,port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -75,7 +79,6 @@ target = input("Enter target: ")
 
 ports = [21,22,23,25,53,80,110,143,443,3306,8080]
 
-# for port in ports:
-#     grab_banner(target,port)
+for port in ports:
+    grab_banner(target,port)
 
-grab_http_banner(target, 8000)
