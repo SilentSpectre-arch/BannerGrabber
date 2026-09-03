@@ -77,7 +77,7 @@ def grab_http_banner(target,port):
 
 target = input("Enter target: ")
 
-ports = [21,22,23,25,53,80,110,143,443,3306,8080]
+ports = [21,22,23,25,53,80,110,143,443,3306,8080,8000]
 
 for port in ports:
     grab_banner(target,port)
