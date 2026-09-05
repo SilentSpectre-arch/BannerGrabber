@@ -13,6 +13,24 @@ def extract_server_header(response):
         return match.group(1).strip()
     return None
 
+def identify_service(port,banner):
+    if port in HTTP_PORTS:
+        return "HTTP", banner
+
+    if banner.startswith("SSH-"):
+        version= banner.split("-")[2].split()[0]
+        return "SSH",version
+
+    if "FTP" in banner.upper():
+        return "FTP",banner
+
+    if "SMTP" in banner.upper():
+        return "SMTP",banner
+
+    if banner:
+        return "Unkown",banner
+    return "Unkown","-"
+
 def grab_banner(target,port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(3)
